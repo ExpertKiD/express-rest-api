@@ -1,0 +1,15 @@
+{
+  "name": "express-rest-api",
+  "version": "1.0.0",
+  "description": "REST API in Node.js using Express.js",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ExpertKiD/express-rest-api.git"
+  },
+  "author": "Suman Adhikari",
+  "license": "ISC"
+}
