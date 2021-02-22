@@ -1,8 +1,10 @@
 // Load modules
-var dotenv = require('dotenv');
-var express = require('express');
+let dotenv = require('dotenv');
+let express = require('express');
 
-var app = express();
+let userRouter = require('./routers/user-router');
+
+let app = express();
 
 // Load config from .env file
 dotenv.config();
@@ -10,6 +12,12 @@ dotenv.config();
 // set port and host
 const PORT = process.env.APP_PORT;
 const HOST = process.env.APP_HOSTNAME; 
+
+// get all routers here
+let myUserRouter = userRouter(express.Router());
+
+// Setup all api router to /api/v1/
+app.use('/api/v1', myUserRouter);
 
 // listen on http(s)://host:port/
 app.listen(PORT, HOST, ()=>{
