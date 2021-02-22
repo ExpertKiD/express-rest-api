@@ -11,5 +11,8 @@
     "url": "https://github.com/ExpertKiD/express-rest-api.git"
   },
   "author": "Suman Adhikari",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
