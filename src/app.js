@@ -16,6 +16,8 @@ const HOST = process.env.APP_HOSTNAME;
 // get all routers here
 let myUserRouter = userRouter(express.Router());
 
+app.use(express.json()) // for parsing application/json
+
 // Setup all api router to /api/v1/
 app.use('/api/v1', myUserRouter);
 
