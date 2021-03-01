@@ -10,16 +10,25 @@ const config = {
     database: 'expressdb'    
 };
 
+// Using in memory users for now!
+let users = [
+    {id: 1, username: "suman.adhikari", password: "123456"},
+    {id: 2, username: "saurav.adhikari", password: "123"},
+];
+
 module.exports = {
     getUser: async function(id){
         await sql.connect(config);
         
         console.log(sql);
 
-        return null;
+        return users.find({ id: 1});
     },
     getAllUsers: function(){
-        return null;
+        return users;
+    },
+    getUserByUsernameAndPassword: async function(user, pass){
+        return users.find( ({ username, password}) => username === user && password === pass );;
     }
 };
 
