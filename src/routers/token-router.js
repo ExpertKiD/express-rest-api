@@ -30,8 +30,9 @@ module.exports = function getTokenRouter( router){
 
             res.status(400).end( JSON.stringify({
                 errors: [
-                "Username or password cannot be empty"
+                "Username or password cannot be empty."
             ]}));
+            return;
         }
 
         // Get the user
@@ -39,7 +40,7 @@ module.exports = function getTokenRouter( router){
         
         if(!user)
         {
-            res.status(404).end(JSON.stringify({ error: "User does not exists"  })
+            res.status(404).end(JSON.stringify({ error: "Invalid Username or password."  })
             );
             return;
         }        
