@@ -16,13 +16,14 @@ module.exports = async function authorize(req, res, next){
     let [authMethod, authToken] = authHeader.split(' ');
 
     switch(authMethod){
-        case null:
+        case undefined:
         case '':
-            res.status(400).end({
+            res.setHeader('Content-Type','application/json');
+            res.status(400).end(JSON.stringify({
                 errors: [
                     "No Authorization header found."
                 ]
-            });
+            }));
             break;
         case 'Bearer':
 
