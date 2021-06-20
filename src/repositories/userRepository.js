@@ -18,11 +18,8 @@ let users = [
 
 module.exports = {
     getUser: async function(id){
-        await sql.connect(config);
-        
-        console.log(sql);
 
-        return users.find({ id: 1});
+        return users.find( user => user.id === id)
     },
     getAllUsers: function(){
         return users;
