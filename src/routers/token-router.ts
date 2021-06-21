@@ -2,23 +2,14 @@ import * as dotenv from 'dotenv';
 import userService from '../repositories/userRepository';
 import {Request, Response, Router} from "express";
 import * as jwt from "jsonwebtoken";
-import { SignOptions} from "jsonwebtoken";
+import {Secret, SignOptions} from "jsonwebtoken";
 
 dotenv.config();
 
-const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
-const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
+const accessTokenSecret: Secret = process.env.ACCESS_TOKEN_SECRET ;
+const refreshTokenSecret: Secret = process.env.REFRESH_TOKEN_SECRET;
 
-
-
-function getTokenRouter(req: Request, res: Response){
-    let username = req.body.username;
-    let password = req.body.password; 
-    
-    console.log(accessTokenSecret, refreshTokenSecret);
-}
-
-module.exports = function getTokenRouter( router: Router){
+export function getTokenRouter( router: Router){
 
     router.post('/', async (req: Request, res: Response) => {
         res.type('json');

@@ -1,22 +1,25 @@
 // Load modules
-let dotenv = require('dotenv');
-let express = require('express');
+import * as dotenv from 'dotenv';
 
-let userRouter = require('./routers/user-router');
-let tokenRouter = require('./routers/token-router');
+import {getUserRouter} from "./routers/user-router";
+import { getTokenRouter} from "./routers/token-router";
+import {Router } from "express";
+import * as express from 'express';
 
 let app = express();
+
+
 
 // Load config from .env file
 dotenv.config();
 
 // set port and host
-const PORT = process.env.APP_PORT;
-const HOST = process.env.APP_HOSTNAME; 
+const PORT: number = process.env.APP_PORT === null?Number.parseInt(process.env.APP_PORT): 3000;
+const HOST: string = process.env.APP_HOSTNAME === null? process.env.APP_HOSTNAME: '';
 
 // get all routers here
-let myUserRouter = userRouter(express.Router());
-let myTokenRouter = tokenRouter(express.Router());
+let myUserRouter: Router = getUserRouter(express.Router());
+let myTokenRouter: Router = getTokenRouter(express.Router());
 
 app.use(express.json()) // for parsing application/json
 

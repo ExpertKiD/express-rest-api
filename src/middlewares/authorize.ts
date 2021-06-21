@@ -1,12 +1,16 @@
-let jwt = require('jsonwebtoken');
-let dotenv = require('dotenv');
+import * as jwt from 'jsonwebtoken';
+import * as dotenv from 'dotenv';
+import {NextFunction, Response, Request} from "express";
+import {VerifyOptions, Algorithm, JsonWebTokenError, TokenExpiredError, NotBeforeError, Secret} from "jsonwebtoken";
 
 dotenv.config();
 
-const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
-const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
+const accessTokenSecret: Secret = process.env.ACCESS_TOKEN_SECRET!;
+const refreshTokenSecret: Secret = process.env.REFRESH_TOKEN_SECRET!;
 
-module.exports = async function authorize(req, res, next){
+
+
+module.exports = async function authorize(req: Request, res: Response, next: NextFunction){
     console.log('TODO [2]: This module authorizes the user');
 
     let authHeader = req.headers.authorization;
@@ -37,9 +41,8 @@ module.exports = async function authorize(req, res, next){
                 }));
             }
 
-            let accessTokenOptions = {
-                algorithm: "HS512",
-                expiresIn: 60
+            let accessTokenOptions: VerifyOptions = {
+                algorithms: ["HS512"]
             };
 
             console.log([accessTokenSecret, refreshTokenSecret])
@@ -50,11 +53,21 @@ module.exports = async function authorize(req, res, next){
 
                 console.log('Result: ' + result.toString())
                 console.log(result)
-            } catch (err){
 
-                console.log(err);
+                next();
 
+            } catch (error){
+                if(error instanceof JsonWebTokenError){
+                    console.log('JSON Web Token Error: '+error.message.toString())
+                } else if(error instanceof TokenExpiredError){
+                    console.log('Token Expired Error: '+error.message.toString())
+                } else if (error instanceof NotBeforeError){
+                    console.log('Token Expired Error: '+error.message.toString())
+                } else {
+                    console.log('Error: '+error.message.toString())
+                }
 
+             } finally {
 
             }
 
@@ -73,5 +86,7 @@ module.exports = async function authorize(req, res, next){
             break;
     }
 
-    next();
+
+
+
 }

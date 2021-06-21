@@ -1,14 +1,6 @@
-let sql = require('mssql');
-let env = require('dotenv');
+import * as env from 'dotenv';
 
 env.config();
-
-const config = {
-    user: 'SA',
-    password: 'Password$99',
-    server: '01HO99\\SQLEXPRESS',
-    database: 'expressdb'    
-};
 
 // Using in memory users for now!
 let users = [
@@ -16,18 +8,21 @@ let users = [
     {id: 2, username: "saurav.adhikari", password: "123"},
 ];
 
-module.exports = {
-    getUser: async function(id){
+let userService = {
+    getUser: async function(id: number){
 
         return users.find( user => user.id === id)
     },
     getAllUsers: function(){
         return users;
     },
-    getUserByUsernameAndPassword: async function(user, pass){
+    getUserByUsernameAndPassword: async function(user: string, pass: string){
         return users.find( ({ username, password}) => username === user && password === pass );;
     }
 };
+
+
+export default userService;
 
 
 
