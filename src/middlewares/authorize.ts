@@ -1,3 +1,11 @@
+let jwt = require('jsonwebtoken');
+let dotenv = require('dotenv');
+
+dotenv.config();
+
+const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
+const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
+
 module.exports = async function authorize(req, res, next){
     console.log('TODO [2]: This module authorizes the user');
 
@@ -29,6 +37,27 @@ module.exports = async function authorize(req, res, next){
                 }));
             }
 
+            let accessTokenOptions = {
+                algorithm: "HS512",
+                expiresIn: 60
+            };
+
+            console.log([accessTokenSecret, refreshTokenSecret])
+
+            try {
+                // Verify the token
+                let result = jwt.verify(authToken, accessTokenSecret, accessTokenOptions)
+
+                console.log('Result: ' + result.toString())
+                console.log(result)
+            } catch (err){
+
+                console.log(err);
+
+
+
+            }
+
             break;
 
         case undefined:
@@ -40,6 +69,7 @@ module.exports = async function authorize(req, res, next){
                     "No Authorization header found."
                 ]
             }));
+            return;
             break;
     }
 

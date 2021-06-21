@@ -48,13 +48,13 @@ module.exports = function getTokenRouter( router){
         let accessTokenPayload = {user: {id: user.id, username: user.username }};
         let accessTokenOptions = {
             algorithm: "HS512",
-            expiresIn: 60
+            expiresIn: 3600
         };
 
         let refreshTokenPayload = {"data":"refresh token"};
         let refreshTokenOptions = {
             algorithm: "HS512",
-            expiresIn: 60
+            expiresIn: 31536000 // 1 year
         };
 
         let accessToken = jwt.sign( accessTokenPayload, accessTokenSecret, accessTokenOptions);            
