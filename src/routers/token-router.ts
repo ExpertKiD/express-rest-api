@@ -1,6 +1,8 @@
-let dotenv = require('dotenv');
-let jwt = require('jsonwebtoken');
-let userService = require('./../repositories/userRepository');
+import * as dotenv from 'dotenv';
+import userService from '../repositories/userRepository';
+import {Request, Response, Router} from "express";
+import * as jwt from "jsonwebtoken";
+import { SignOptions} from "jsonwebtoken";
 
 dotenv.config();
 
@@ -9,16 +11,16 @@ const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
 
 
 
-function getTokenRouter(req, res){
+function getTokenRouter(req: Request, res: Response){
     let username = req.body.username;
     let password = req.body.password; 
     
     console.log(accessTokenSecret, refreshTokenSecret);
 }
 
-module.exports = function getTokenRouter( router){
+module.exports = function getTokenRouter( router: Router){
 
-    router.post('/', async (req, res) => {
+    router.post('/', async (req: Request, res: Response) => {
         res.type('json');
 
         let username = req.body.username;
@@ -46,13 +48,13 @@ module.exports = function getTokenRouter( router){
         }        
 
         let accessTokenPayload = {user: {id: user.id, username: user.username }};
-        let accessTokenOptions = {
+        let accessTokenOptions: SignOptions = {
             algorithm: "HS512",
             expiresIn: 3600
         };
 
         let refreshTokenPayload = {"data":"refresh token"};
-        let refreshTokenOptions = {
+        let refreshTokenOptions: SignOptions = {
             algorithm: "HS512",
             expiresIn: 31536000 // 1 year
         };
