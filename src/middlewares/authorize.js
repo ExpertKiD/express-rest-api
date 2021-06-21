@@ -18,6 +18,7 @@ module.exports = async function authorize(req, res, next){
     switch(authMethod){
 
         case 'Bearer':
+            // Check for empty token
             if( authToken === undefined)
             {
                 res.setHeader('Content-Type','application/json');
