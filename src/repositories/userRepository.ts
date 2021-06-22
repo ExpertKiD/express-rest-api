@@ -21,8 +21,4 @@ let userService = {
     }
 };
 
-
 export default userService;
-
-
-

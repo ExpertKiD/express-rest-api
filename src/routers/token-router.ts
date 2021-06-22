@@ -6,8 +6,8 @@ import {Secret, SignOptions} from "jsonwebtoken";
 
 dotenv.config();
 
-const accessTokenSecret: Secret = process.env.ACCESS_TOKEN_SECRET ;
-const refreshTokenSecret: Secret = process.env.REFRESH_TOKEN_SECRET;
+const accessTokenSecret: Secret = process.env.ACCESS_TOKEN_SECRET ===undefined? '': process.env.ACCESS_TOKEN_SECRET.toString();
+const refreshTokenSecret: Secret = process.env.REFRESH_TOKEN_SECRET === undefined? '':process.env.REFRESH_TOKEN_SECRET.toString();
 
 export function getTokenRouter( router: Router){
 
@@ -23,20 +23,20 @@ export function getTokenRouter( router: Router){
 
             res.status(400).end( JSON.stringify({
                 errors: [
-                "Username or password cannot be empty."
-            ]}));
+                    "Username or password cannot be empty."
+                ]}));
             return;
         }
 
         // Get the user
         var user = await userService.getUserByUsernameAndPassword(username, password);
-        
+
         if(!user)
         {
             res.status(404).end(JSON.stringify({ error: "Invalid Username or password."  })
             );
             return;
-        }        
+        }
 
         let accessTokenPayload = {user: {id: user.id, username: user.username }};
         let accessTokenOptions: SignOptions = {
@@ -50,13 +50,13 @@ export function getTokenRouter( router: Router){
             expiresIn: 31536000 // 1 year
         };
 
-        let accessToken = jwt.sign( accessTokenPayload, accessTokenSecret, accessTokenOptions);            
+        let accessToken = jwt.sign( accessTokenPayload, accessTokenSecret, accessTokenOptions);
         let refreshToken = jwt.sign( refreshTokenPayload, refreshTokenSecret, refreshTokenOptions);
- 
+
         res.status(200).send({
             "accessToken": accessToken,
             "refreshToken": refreshToken
-        });        
+        });
     });
 
     return router;

@@ -8,22 +8,20 @@ dotenv.config();
 const accessTokenSecret: Secret = process.env.ACCESS_TOKEN_SECRET!;
 const refreshTokenSecret: Secret = process.env.REFRESH_TOKEN_SECRET!;
 
-
-
-module.exports = async function authorize(req: Request, res: Response, next: NextFunction){
+export async function authorize(req: Request, res: Response, next: NextFunction){
     console.log('TODO [2]: This module authorizes the user');
 
     let authHeader = req.headers.authorization;
 
-   if(authHeader === undefined){
-       res.setHeader('Content-Type','application/json');
-       res.status(400).end(JSON.stringify({
-           errors:[
-               "No Authorization header found."
-           ]
-       }));
-       return;
-   }
+    if(authHeader === undefined){
+        res.setHeader('Content-Type','application/json');
+        res.status(400).end(JSON.stringify({
+            errors:[
+                "No Authorization header found."
+            ]
+        }));
+        return;
+    }
 
     let [authMethod, authToken] = authHeader.split(' ');
 
@@ -67,7 +65,7 @@ module.exports = async function authorize(req: Request, res: Response, next: Nex
                     console.log('Error: '+error.message.toString())
                 }
 
-             } finally {
+            } finally {
 
             }
 
@@ -87,6 +85,5 @@ module.exports = async function authorize(req: Request, res: Response, next: Nex
     }
 
 
-
-
 }
+

@@ -1,22 +1,19 @@
-import {Request, Response, Router} from "express";
 import userService from "../repositories/userRepository";
+import express from 'express';
+import {authenticate} from "../middlewares/authenticate";
+import {authorize} from "../middlewares/authorize";
 
-
-let authenticate = require('../middlewares/authenticate');
-let authorize = require('../middlewares/authorize');
-
-
-export function getUserRouter( router: Router){
+export function getUserRouter( router: express.Router){
 
     router.use([ authenticate, authorize ]);
 
-    router.get('/', (req: Request, res: Response)=>{
+    router.get('/', (req: express.Request, res: express.Response)=>{
         let users = userService.getUser(1);
 
         return res.json(users);
     });
 
-    router.get('/:id', async (req: Request, res: Response)=>{
+    router.get('/:id', async (req: express.Request, res: express.Response)=>{
         let user = await userService.getUser(Number.parseInt(req.params.id));
 
         console.log(user)
@@ -26,3 +23,8 @@ export function getUserRouter( router: Router){
 
     return router;
 }
+
+
+
+
+
