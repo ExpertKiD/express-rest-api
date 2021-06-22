@@ -1,9 +1,14 @@
 node_modules/
 
 *.lock
+yarn-*.log
 
 package-lock.json
 .env
 
 # jetbrains
 .idea/
+
+# dist files
+dist/
+
