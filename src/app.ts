@@ -19,6 +19,8 @@ const HOST: string = process.env.APP_HOSTNAME === undefined? '' : process.env.AP
 let myUserRouter: Router = getUserRouter( express.Router() );
 let myTokenRouter: Router = getTokenRouter( express.Router() );
 
+app.disable('x-powered-by');
+
 app.use(express.json()) // for parsing application/json
 
 // Setup all api router to /api/v1/
