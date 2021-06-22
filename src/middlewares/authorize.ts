@@ -5,8 +5,8 @@ import {VerifyOptions, Algorithm, JsonWebTokenError, TokenExpiredError, NotBefor
 
 dotenv.config();
 
-const accessTokenSecret: Secret = process.env.ACCESS_TOKEN_SECRET!;
-const refreshTokenSecret: Secret = process.env.REFRESH_TOKEN_SECRET!;
+const accessTokenSecret: Secret = process.env.ACCESS_TOKEN_SECRET === undefined? 'access-secret': process.env.ACCESS_TOKEN_SECRET.toString();
+const refreshTokenSecret: Secret = process.env.REFRESH_TOKEN_SECRET === undefined? 'refresh-secret':process.env.REFRESH_TOKEN_SECRET.toString();
 
 export async function authorize(req: Request, res: Response, next: NextFunction){
     console.log('TODO [2]: This module authorizes the user');
@@ -49,23 +49,51 @@ export async function authorize(req: Request, res: Response, next: NextFunction)
                 // Verify the token
                 let result = jwt.verify(authToken, accessTokenSecret, accessTokenOptions)
 
-                console.log('Result: ' + result.toString())
-                console.log(result)
-
                 next();
 
             } catch (error){
-                if(error instanceof JsonWebTokenError){
-                    console.log('JSON Web Token Error: '+error.message.toString())
-                } else if(error instanceof TokenExpiredError){
-                    console.log('Token Expired Error: '+error.message.toString())
-                } else if (error instanceof NotBeforeError){
-                    console.log('Token Expired Error: '+error.message.toString())
-                } else {
-                    console.log('Error: '+error.message.toString())
-                }
 
-            } finally {
+                if(error instanceof NotBeforeError){
+                    res.setHeader('Content-Type','application/json');
+
+                    res.status(400).end(JSON.stringify({
+                        errors: [
+                            "Token cannot be used before start period."
+                        ]
+                    }));
+
+                    return;
+                } else if(error instanceof TokenExpiredError){
+                    res.setHeader('Content-Type','application/json');
+
+                    res.status(400).end(JSON.stringify({
+                        errors: [
+                            "Token expired."
+                        ]
+                    }));
+
+                    return;
+                } else if (error instanceof JsonWebTokenError){
+                    res.setHeader('Content-Type','application/json');
+
+                    res.status(400).end(JSON.stringify({
+                        errors: [
+                            "Token cannot be verified."
+                        ]
+                    }));
+
+                    return;
+                } else {
+                    res.setHeader('Content-Type','application/json');
+
+                    res.status(400).end(JSON.stringify({
+                        errors: [
+                            "Unknown error!"
+                        ]
+                    }));
+
+                    return;
+                }
 
             }
 
