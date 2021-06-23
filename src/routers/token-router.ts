@@ -57,10 +57,10 @@ export function getTokenRouter( router: Router){
         let refreshToken = jwt.sign( refreshTokenPayload, refreshTokenSecret, refreshTokenOptions);
 
         res.setHeader('Content-Type','application/json');
-        res.status(200).end({
+        res.status(200).end(JSON.stringify({
             "accessToken": accessToken,
             "refreshToken": refreshToken
-        });
+        }));
         return;
     });
 
