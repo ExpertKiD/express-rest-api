@@ -1,7 +1,15 @@
 import * as jwt from 'jsonwebtoken';
 import * as dotenv from 'dotenv';
 import {NextFunction, Response, Request} from "express";
-import {VerifyOptions, Algorithm, JsonWebTokenError, TokenExpiredError, NotBeforeError, Secret} from "jsonwebtoken";
+import {
+    VerifyOptions,
+    Algorithm,
+    JsonWebTokenError,
+    TokenExpiredError,
+    NotBeforeError,
+    Secret,
+    JwtPayload
+} from "jsonwebtoken";
 
 dotenv.config();
 
@@ -49,8 +57,16 @@ export async function authorize(req: Request, res: Response, next: NextFunction)
                 // Verify the token
                 let result = jwt.verify(authToken, accessTokenSecret, accessTokenOptions)
 
-                next();
+                // if token payload successfully extracted
+                if (result instanceof Object){
+                    // User is setup properly in payload
+                    // Send currentUser to all other middlewares
+                    if(result.user !== undefined){
+                        res.locals.currentUser = result.user;
+                    }
+                }
 
+                next();
             } catch (error){
 
                 if(error instanceof NotBeforeError){
