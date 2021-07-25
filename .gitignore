@@ -4,6 +4,7 @@ node_modules/
 yarn-*.log
 
 package-lock.json
+
 .env
 
 # jetbrains
